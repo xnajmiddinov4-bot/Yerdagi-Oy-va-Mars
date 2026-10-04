@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TERRA2SPACE — Oy va Marsning Yerdagi analoglari</title>
+  <meta name="description" content="Olimlar Oy va Marsga o‘xshash muhitlarni o‘rganish uchun foydalanadigan Yerdagi joylarni kashf eting." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Leaflet (map library) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+
+  <!-- Our styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============ NAVBAR ============ -->
+  <header class="navbar">
+    <a class="brand" href="#top" aria-label="TERRA2SPACE bosh sahifasi">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="8" fill="none" stroke="currentColor" stroke-width="2" />
+        <circle cx="24" cy="8" r="3" fill="var(--mars)" />
+      </svg>
+      <span>TERRA2SPACE</span>
+    </a>
+    <nav class="nav-links" aria-label="Asosiy">
+      <a href="#top">Bosh sahifa</a>
+      <a href="#map-section">Xarita</a>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="hero-text">
+        <h1>Yerning o‘z Oy va Mars analoglari bor</h1>
+        <p class="hero-sub">
+          Yerdagi eng qattiq sharoitli ba’zi joylar boshqa olamlarga biroz o‘xshaydi va o‘zini shunday tutadi.
+          Olimlar Oy va Marsga tayyorgarlik ko‘rish hamda ulardan o‘rganish uchun shunday ekstremal muhitlarni tadqiq qilishadi.
+        </p>
+        <a class="btn" href="#map-section">Analog joylarni ko‘rish</a>
+        <p class="hero-note">
+          Analoglar ba’zi jihatlari bilan o‘xshash, aynan bir xil emas. Yerdagi hech bir joy Oy yoki Marsning nusxasi emas.
+        </p>
+      </div>
+
+      <!-- Earth - Moon - Mars visual -->
+      <div class="worlds" aria-hidden="true">
+        <svg class="worlds-line" viewBox="0 0 600 40" preserveAspectRatio="none">
+          <path d="M20 20 H580" />
+        </svg>
+        <div class="world world-earth"><span class="world-label">Yer</span></div>
+        <div class="world world-moon"><span class="world-label">Oy</span></div>
+        <div class="world world-mars"><span class="world-label">Mars</span></div>
+      </div>
+    </section>
+
+    <!-- ============ MAP ============ -->
+    <section class="map-section" id="map-section">
+      <div class="section-head">
+        <h2>Analog joylar</h2>
+        <p>Joyning tadqiqot uchun nima sababdan foydali ekanini bilish uchun markerni tanlang.</p>
+      </div>
+
+      <div class="toolbar">
+        <div class="filters" role="group" aria-label="Joylarni filtrlash">
+          <button class="chip is-active" data-filter="all" aria-pressed="true">Barchasi</button>
+          <button class="chip" data-filter="mars" aria-pressed="false">
+            <span class="dot dot-mars"></span>Mars
+          </button>
+          <button class="chip" data-filter="moon" aria-pressed="false">
+            <span class="dot dot-moon"></span>Oy
+          </button>
+          <button class="chip" data-filter="potential" aria-pressed="false">
+            <span class="dot dot-potential"></span>Potensial analog
+          </button>
+        </div>
+        <p class="count" id="count" aria-live="polite"></p>
+      </div>
+
+      <div class="map-wrap">
+        <div id="map" aria-label="Analog joylar joylashgan dunyo xaritasi"></div>
+
+        <!-- Location card (filled by script.js) -->
+        <aside class="card" id="card" hidden aria-live="polite">
+          <button class="card-close" id="card-close" aria-label="Joy kartasini yopish">&times;</button>
+
+          <p class="card-tag" id="card-tag"></p>
+          <h3 id="card-name"></h3>
+          <p class="card-country" id="card-country"></p>
+
+          <dl class="card-facts">
+            <div>
+              <dt>Muhit</dt>
+              <dd id="card-env"></dd>
+            </div>
+            <div>
+              <dt>Nega muhim</dt>
+              <dd id="card-why"></dd>
+            </div>
+            <div>
+              <dt>Ilmiy asos</dt>
+              <dd id="card-science"></dd>
+            </div>
+          </dl>
+
+          <div class="score">
+            <div class="score-top">
+              <span class="score-label">Loyiha analog bali</span>
+              <span class="score-value"><strong id="card-score"></strong>/100</span>
+            </div>
+            <div class="score-bar"><span id="card-bar"></span></div>
+            <p class="score-note">Bu ushbu loyiha uchun tuzilgan ta’limiy ball. NASAning rasmiy bahosi emas.</p>
+          </div>
+        </aside>
+
+        <p class="empty" id="empty" hidden>Bu toifada hozircha joylar yo‘q.</p>
+        <p class="empty tile-error" id="map-msg" hidden></p>
+        <p class="empty tile-error" id="tile-error" hidden>Xarita bo‘laklarini yuklab bo‘lmadi. Internet aloqasini tekshiring va saytni mahalliy fayl sifatida emas, http(s) orqali oching.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>TERRA2SPACE — NASA Space Apps Challenge uchun yaratilgan. NASA bilan bog‘liq emas va u tomonidan tasdiqlanmagan.</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
